@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Sheets App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Toolbar with basic formatting and row/column controls -->
+  <div id="toolbar">
+    <button onclick="toggleFormat('bold')"><b>B</b></button>
+    <button onclick="toggleFormat('italic')"><i>I</i></button>
+    <select id="fontSize" onchange="setFontSize(this.value)">
+      <option value="14px">14px</option>
+      <option value="16px">16px</option>
+      <option value="18px">18px</option>
+      <option value="20px">20px</option>
+    </select>
+    <input type="color" id="fontColor" onchange="setFontColor(this.value)">
+    <button onclick="addRow()">Add Row</button>
+    <button onclick="addColumn()">Add Column</button>
+    <!-- Data quality functions -->
+    <button onclick="applyDataQuality('trim')">TRIM</button>
+    <button onclick="applyDataQuality('upper')">UPPER</button>
+    <button onclick="applyDataQuality('lower')">LOWER</button>
+    <button onclick="removeDuplicates()">Remove Duplicates</button>
+    <button onclick="findAndReplace()">Find & Replace</button>
+  </div>
+
+  <!-- Formula Bar -->
+  <div id="formula-bar">
+    <input type="text" id="formulaInput" placeholder="Enter formula (e.g. =SUM(A1:A3))" onkeydown="if(event.key==='Enter'){applyFormula()}">
+  </div>
+
+  <!-- Spreadsheet Grid -->
+  <div id="spreadsheet-container">
+    <table id="spreadsheet">
+      <thead>
+        <tr>
+          <th></th>
+          <!-- Column Headers -->
+          <!-- We'll start with 10 columns labeled A-J -->
+          <script>
+            const columns = 10;
+            const rows = 10;
+            for (let i = 0; i < columns; i++) {
+              document.write('<th>' + String.fromCharCode(65 + i) + '</th>');
+            }
+          </script>
+        </tr>
+      </thead>
+      <tbody>
+        <script>
+          // Build 10 rows (labeled 1-10) with contenteditable cells having ids like A1, B1, etc.
+          for (let r = 1; r <= rows; r++) {
+            document.write('<tr>');
+            document.write('<th>' + r + '</th>');
+            for (let c = 0; c < columns; c++) {
+              let cellId = String.fromCharCode(65 + c) + r;
+              document.write('<td contenteditable="true" id="' + cellId + '" onblur="cellUpdated(this)" onclick="selectCell(this)"></td>');
+            }
+            document.write('</tr>');
+          }
+        </script>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
